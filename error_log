@@ -1,0 +1,33 @@
+[28-Jan-2023 03:03:20 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 859
+[28-Jan-2023 03:03:20 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 861
+[28-Jan-2023 03:03:20 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 868
+[28-Jan-2023 03:03:20 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 175
+[28-Jan-2023 03:03:20 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 176
+[17-Apr-2023 20:22:02 UTC] PHP Fatal error:  Declaration of Drush\Command\DrushInputAdapter::hasParameterOption($values) must be compatible with Symfony\Component\Console\Input\InputInterface::hasParameterOption($values, $onlyParams = false) in phar:///usr/local/bin/drush.phar/lib/Drush/Command/DrushInputAdapter.php on line 61
+[27-Jun-2023 03:18:02 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 859
+[27-Jun-2023 03:18:02 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 861
+[27-Jun-2023 03:18:02 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 868
+[27-Jun-2023 03:18:02 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 175
+[27-Jun-2023 03:18:02 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 176
+[27-Jun-2023 03:18:02 UTC] PHP Fatal error:  Declaration of Drush\Command\DrushInputAdapter::hasParameterOption($values) must be compatible with Symfony\Component\Console\Input\InputInterface::hasParameterOption($values, $onlyParams = false) in phar:///usr/local/bin/drush.phar/lib/Drush/Command/DrushInputAdapter.php on line 61
+[27-Jun-2023 03:19:01 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 859
+[27-Jun-2023 03:19:01 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 861
+[27-Jun-2023 03:19:01 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 868
+[27-Jun-2023 03:19:01 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 175
+[27-Jun-2023 03:19:01 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 176
+[27-Jun-2023 03:19:01 UTC] PHP Fatal error:  Declaration of Drush\Command\DrushInputAdapter::hasParameterOption($values) must be compatible with Symfony\Component\Console\Input\InputInterface::hasParameterOption($values, $onlyParams = false) in phar:///usr/local/bin/drush.phar/lib/Drush/Command/DrushInputAdapter.php on line 61
+[01-Jul-2023 00:35:48 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 859
+[01-Jul-2023 00:35:48 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 861
+[01-Jul-2023 00:35:48 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 868
+[01-Jul-2023 00:35:48 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 175
+[01-Jul-2023 00:35:48 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 176
+[01-Jul-2023 00:35:53 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 859
+[01-Jul-2023 00:35:53 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 861
+[01-Jul-2023 00:35:53 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 868
+[01-Jul-2023 00:35:53 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 175
+[01-Jul-2023 00:35:53 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 176
+[01-Jul-2023 00:36:05 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 859
+[01-Jul-2023 00:36:05 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 861
+[01-Jul-2023 00:36:05 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/command.inc on line 868
+[01-Jul-2023 00:36:05 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 175
+[01-Jul-2023 00:36:05 UTC] PHP Deprecated:  Array and string offset access syntax with curly braces is deprecated in phar:///usr/local/bin/drush.phar/includes/sitealias.inc on line 176
