@@ -30,7 +30,7 @@ class UrlTest extends KernelTestBase {
     // Test link generator.
     $text = $this->randomMachineName();
     $path = "<SCRIPT>alert('XSS')</SCRIPT>";
-    $encoded_path = "3CSCRIPT%3Ealert%28%27XSS%27%29%3C/SCRIPT%3E";
+    $encoded_path = "%3CSCRIPT%3Ealert%28%27XSS%27%29%3C/SCRIPT%3E";
 
     $link = Link::fromTextAndUrl($text, Url::fromUserInput('/' . $path))->toString();
     $this->assertStringContainsString($encoded_path, $link, new FormattableMarkup('XSS attack @path was filtered by \Drupal\Core\Utility\LinkGeneratorInterface::generate().', ['@path' => $path]));
@@ -136,7 +136,7 @@ class UrlTest extends KernelTestBase {
     $l = Link::fromTextAndUrl('foo', Url::fromUri('https://www.drupal.org'))->toString();
 
     // Test a renderable array passed to the link generator.
-    $renderer->executeInRenderContext(new RenderContext(), function () use ($renderer, $l) {
+    $renderer->executeInRenderContext(new RenderContext(), function () use ($l) {
       $renderable_text = ['#markup' => 'foo'];
       $l_renderable_text = \Drupal::service('link_generator')->generate($renderable_text, Url::fromUri('https://www.drupal.org'));
       $this->assertEquals($l, $l_renderable_text);

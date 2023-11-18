@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\filter\FilterFormatInterface;
 use Drupal\filter\FilterPluginCollection;
 use Drupal\filter\Plugin\FilterInterface;
+use Drupal\user\Entity\Role;
 
 /**
  * Represents a text format.
@@ -228,7 +229,7 @@ class FilterFormat extends ConfigEntityBase implements FilterFormatInterface, En
       // \Drupal\filter\FilterPermissions::permissions() and lastly
       // filter_formats(), so its cache must be reset upfront.
       if (($roles = $this->get('roles')) && $permission = $this->getPermissionName()) {
-        foreach (user_roles() as $rid => $name) {
+        foreach (Role::loadMultiple() as $rid => $role) {
           $enabled = in_array($rid, $roles, TRUE);
           user_role_change_permissions($rid, [$permission => $enabled]);
         }
@@ -297,10 +298,6 @@ class FilterFormat extends ConfigEntityBase implements FilterFormatInterface, En
       $restrictions = array_reduce($filters, function ($restrictions, $filter) {
         $new_restrictions = $filter->getHTMLRestrictions();
 
-        if (isset($new_restrictions['forbidden_tags'])) {
-          @trigger_error('forbidden_tags for FilterInterface::getHTMLRestrictions() is deprecated in drupal:9.4.0 and is removed from drupal:10.0.0', E_USER_DEPRECATED);
-        }
-
         // The first filter with HTML restrictions provides the initial set.
         if (!isset($restrictions)) {
           return $new_restrictions;
@@ -309,16 +306,6 @@ class FilterFormat extends ConfigEntityBase implements FilterFormatInterface, En
         // with the existing set, to ensure we only end up with the tags that are
         // allowed by *all* filters with an "allowed html" setting.
         else {
-          // Track the union of forbidden tags.
-          if (isset($new_restrictions['forbidden_tags'])) {
-            if (!isset($restrictions['forbidden_tags'])) {
-              $restrictions['forbidden_tags'] = $new_restrictions['forbidden_tags'];
-            }
-            else {
-              $restrictions['forbidden_tags'] = array_unique(array_merge($restrictions['forbidden_tags'], $new_restrictions['forbidden_tags']));
-            }
-          }
-
           // Track the intersection of allowed tags.
           if (isset($restrictions['allowed'])) {
             $intersection = $restrictions['allowed'];
@@ -376,31 +363,16 @@ class FilterFormat extends ConfigEntityBase implements FilterFormatInterface, En
             $restrictions['allowed'] = $intersection;
           }
 
+          // Simplification: if the only remaining allowed tag is the asterisk
+          // (which contains attribute restrictions that apply to all tags),
+          // then effectively nothing is allowed.
+          if (count($restrictions['allowed']) === 1 && array_key_exists('*', $restrictions['allowed'])) {
+            $restrictions['allowed'] = [];
+          }
+
           return $restrictions;
         }
       }, NULL);
-
-      // Simplification: if we have both allowed (intersected) and forbidden
-      // (unioned) tags, then remove any allowed tags that are also forbidden.
-      // Once complete, the list of allowed tags expresses all tag-level
-      // restrictions, and the list of forbidden tags can be removed.
-      if (isset($restrictions['allowed']) && isset($restrictions['forbidden_tags'])) {
-        foreach ($restrictions['forbidden_tags'] as $tag) {
-          if (isset($restrictions['allowed'][$tag])) {
-            unset($restrictions['allowed'][$tag]);
-          }
-        }
-        unset($restrictions['forbidden_tags']);
-      }
-
-      // Simplification: if the only remaining allowed tag is the asterisk
-      // (which contains attribute restrictions that apply to all tags), and
-      // there are no forbidden tags, then effectively nothing is allowed.
-      if (isset($restrictions['allowed'])) {
-        if (count($restrictions['allowed']) === 1 && array_key_exists('*', $restrictions['allowed']) && !isset($restrictions['forbidden_tags'])) {
-          $restrictions['allowed'] = [];
-        }
-      }
 
       return $restrictions;
     }

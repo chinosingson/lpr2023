@@ -20,7 +20,7 @@ use Symfony\Component\Yaml\Yaml;
  * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\ToolbarItemConstraintValidator
  * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\ToolbarItemDependencyConstraintValidator
  * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\EnabledConfigurablePluginsConstraintValidator
- * @covers \Drupal\ckeditor5\Plugin\Editor\CKEditor5::validatePair()
+ * @covers \Drupal\ckeditor5\Plugin\Editor\CKEditor5::validatePair
  * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\FundamentalCompatibilityConstraintValidator
  * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\CKEditor5MediaAndFilterSettingsInSyncConstraintValidator
  * @group ckeditor5
@@ -45,6 +45,7 @@ class ValidatorsTest extends KernelTestBase {
     'ckeditor5_plugin_conditions_test',
     'editor',
     'filter',
+    'filter_test',
     'media',
     'media_library',
     'views',
@@ -59,9 +60,6 @@ class ValidatorsTest extends KernelTestBase {
   }
 
   /**
-   * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\ToolbarItemConstraintValidator
-   * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\ToolbarItemDependencyConstraintValidator
-   * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\EnabledConfigurablePluginsConstraintValidator
    * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\CKEditor5ElementConstraintValidator
    * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\StyleSensibleElementConstraintValidator
    * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\UniqueLabelInListConstraintValidator
@@ -97,11 +95,8 @@ class ValidatorsTest extends KernelTestBase {
     );
     $violations = $typed_config->validate();
 
-    $actual_violations = [];
-    foreach ($violations as $violation) {
-      $actual_violations[$violation->getPropertyPath()] = (string) $violation->getMessage();
-    }
-    $this->assertSame($expected_violations, $actual_violations);
+    $actual_violations = self::violationsToArray($violations);
+    $this->assertSame($expected_violations, self::violationsToArray($violations));
 
     if (empty($expected_violations)) {
       $this->assertConfigSchema(
@@ -136,8 +131,11 @@ class ValidatorsTest extends KernelTestBase {
         ],
         'plugins' => [
           'ckeditor5_list' => [
-            'reversed' => FALSE,
-            'startIndex' => FALSE,
+            'properties' => [
+              'reversed' => FALSE,
+              'startIndex' => FALSE,
+            ],
+            'multiBlock' => TRUE,
           ],
         ],
       ],
@@ -511,7 +509,10 @@ class ValidatorsTest extends KernelTestBase {
       ],
       'violations' => [
         'settings.plugins.ckeditor5_style.styles.0.element' => 'The following tag is missing the required attribute <code>class</code>: <code>&lt;p&gt;</code>.',
-        'settings.plugins.ckeditor5_style.styles.1.element' => 'The following tag does not have the minimum of 1 allowed values for the required attribute <code>class</code>: <code>&lt;blockquote class=&quot;&quot;&gt;</code>.',
+        'settings.plugins.ckeditor5_style.styles.1.element' => [
+          'The following tag is not valid HTML: <em class="placeholder">&lt;blockquote class=&quot;&quot;&gt;</em>.',
+          'The following tag does not have the minimum of 1 allowed values for the required attribute <code>class</code>: <code>&lt;blockquote class=&quot;&quot;&gt;</code>.',
+        ],
       ],
     ];
     $data['VALID: Style plugin has multiple styles with different labels'] = [
@@ -548,11 +549,6 @@ class ValidatorsTest extends KernelTestBase {
   }
 
   /**
-   * @covers \Drupal\ckeditor5\Plugin\Editor\CKEditor5::validatePair()
-   * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\FundamentalCompatibilityConstraintValidator
-   * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\ToolbarItemConstraintValidator
-   * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\ToolbarItemDependencyConstraintValidator
-   * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\EnabledConfigurablePluginsConstraintValidator
    * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\SourceEditingPreventSelfXssConstraintValidator
    * @dataProvider providerPair
    *
@@ -587,15 +583,31 @@ class ValidatorsTest extends KernelTestBase {
       'label' => 'View Mode 2',
     ])->save();
     assert($text_editor instanceof EditorInterface);
-    $this->assertConfigSchema(
-      $this->typedConfig,
-      $text_editor->getConfigDependencyName(),
-      $text_editor->toArray()
-    );
     $text_format = FilterFormat::create([
       'filters' => $filters,
     ]);
     assert($text_format instanceof FilterFormatInterface);
+    // TRICKY: because we're validating using `editor.editor.*` as the config
+    // name, TextEditorObjectDependentValidatorTrait will load the stored
+    // filter format. That has not yet been updated at this point, so in order
+    // for validation to pass, it must first be saved.
+    // @see \Drupal\ckeditor5\Plugin\Validation\Constraint\TextEditorObjectDependentValidatorTrait::createTextEditorObjectFromContext()
+    // @todo Remove this work-around in https://www.drupal.org/project/drupal/issues/3231354
+    $text_format
+      ->set('format', $text_editor->id())
+      ->set('name', $this->randomString())
+      ->save();
+
+    // TRICKY: only assert config schema (and validation constraints) if we
+    // expect NO violations: when violations are expected, this would just find
+    // the very violations that the next assertion is checking.
+    if (empty($expected_violations)) {
+      $this->assertConfigSchema(
+        $this->typedConfig,
+        $text_editor->getConfigDependencyName(),
+        $text_editor->toArray()
+      );
+    }
 
     $this->assertSame($expected_violations, $this->validatePairToViolationsArray($text_editor, $text_format, TRUE));
   }
@@ -1069,7 +1081,7 @@ class ValidatorsTest extends KernelTestBase {
       'filters' => [],
       'violations' => [],
     ];
-    $data['INVALID: drupalMedia toolbar item condition NOT met: media filter enabled'] = [
+    $data['INVALID: drupalMedia toolbar item condition NOT met: media filter disabled'] = [
       'settings' => [
         'toolbar' => [
           'items' => [
@@ -1093,13 +1105,17 @@ class ValidatorsTest extends KernelTestBase {
             'drupalMedia',
           ],
         ],
-        'plugins' => [],
+        'plugins' => [
+          'media_media' => [
+            'allow_view_mode_override' => FALSE,
+          ],
+        ],
       ],
       'image_upload' => [
         'status' => FALSE,
       ],
       'filters' => [
-        'filter_html' => [
+        'media_embed' => [
           'id' => 'media_embed',
           'provider' => 'media',
           'status' => TRUE,
@@ -1111,9 +1127,7 @@ class ValidatorsTest extends KernelTestBase {
           ],
         ],
       ],
-      'violations' => [
-        'settings.toolbar.items.0' => 'The <em class="placeholder">Drupal media</em> toolbar item requires the <em class="placeholder">Embed media</em> filter to be enabled.',
-      ],
+      'violations' => [],
     ];
     $data['VALID: HTML format: very minimal toolbar + wildcard in source editing HTML'] = [
       'settings' => [
@@ -1463,6 +1477,66 @@ class ValidatorsTest extends KernelTestBase {
       'violations' => [],
     ];
     return $data;
+  }
+
+  /**
+   * Tests that validation works with >1 enabled HTML restrictor filters.
+   *
+   * @covers \Drupal\ckeditor5\Plugin\Validation\Constraint\FundamentalCompatibilityConstraintValidator::checkHtmlRestrictionsMatch
+   */
+  public function testMultipleHtmlRestrictingFilters(): void {
+    $this->container->get('module_installer')->install(['filter_test']);
+
+    $text_format = FilterFormat::create([
+      'format' => 'very_restricted',
+      'name' => $this->randomMachineName(),
+      'filters' => [
+        // The first filter of type TYPE_HTML_RESTRICTOR.
+        'filter_html' => [
+          'id' => 'filter_html',
+          'provider' => 'filter',
+          'status' => TRUE,
+          'weight' => 0,
+          'settings' => [
+            'allowed_html' => "<p> <br>",
+            'filter_html_help' => TRUE,
+            'filter_html_nofollow' => TRUE,
+          ],
+        ],
+        // The second filter of type TYPE_HTML_RESTRICTOR. Configure this to
+        // allow exactly what the first filter allows.
+        'filter_test_restrict_tags_and_attributes' => [
+          'id' => 'filter_test_restrict_tags_and_attributes',
+          'provider' => 'filter_test',
+          'status' => TRUE,
+          'settings' => [
+            'restrictions' => [
+              'allowed' => [
+                'p' => FALSE,
+                'br' => FALSE,
+                '*' => [
+                  'dir' => ['ltr' => TRUE, 'rtl' => TRUE],
+                  'lang' => TRUE,
+                ],
+              ],
+            ],
+          ],
+        ],
+      ],
+    ]);
+    $text_editor = Editor::create([
+      'format' => 'very_restricted',
+      'editor' => 'ckeditor5',
+      'settings' => [
+        'toolbar' => [
+          'items' => [],
+        ],
+        'plugins' => [],
+      ],
+      'image_upload' => [],
+    ]);
+
+    $this->assertSame([], $this->validatePairToViolationsArray($text_editor, $text_format, TRUE));
   }
 
 }

@@ -146,7 +146,6 @@ class SettingsTrayBlockFormTest extends SettingsTrayTestBase {
     $this->getSession()->executeScript('jQuery("body").trigger(jQuery.Event("keyup", { keyCode: 27 }));');
     $this->waitForOffCanvasToClose();
     $this->getSession()->wait(100);
-    $this->getSession()->executeScript("jQuery('[data-quickedit-entity-id]').trigger('mouseleave')");
     $this->getSession()->getPage()->find('css', static::TOOLBAR_EDIT_LINK_SELECTOR)->mouseOver();
     $this->assertEditModeDisabled();
     $this->assertNotEmpty($web_assert->waitForElement('css', '#drupal-live-announce:contains(Exited edit mode)'));
@@ -278,7 +277,7 @@ class SettingsTrayBlockFormTest extends SettingsTrayTestBase {
       $web_assert->assertWaitOnAjaxRequest();
       // The settings_tray_test_validation test plugin form always has a
       // validation error.
-      $web_assert->elementContains('css', '#drupal-off-canvas', 'Sorry system error. Please save again');
+      $web_assert->elementContains('css', '#drupal-off-canvas', 'Sorry system error. Save again');
       $this->disableEditMode();
       $block->delete();
     }
