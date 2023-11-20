@@ -823,7 +823,7 @@ class DateTimePlusTest extends TestCase {
         ],
       ],
       [
-        'invalid time string',
+        'lorem ipsum dolor sit amet',
         [
           'The timezone could not be found in the database',
           'Double timezone specification',

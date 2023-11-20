@@ -41,10 +41,8 @@ class PathItemTest extends KernelTestBase {
 
     $this->installSchema('node', ['node_access']);
 
-    NodeType::create([
-      'type' => 'foo',
-      'name' => 'Foo',
-    ])->save();
+    $node_type = NodeType::create(['type' => 'foo']);
+    $node_type->save();
 
     $this->installConfig(['language']);
     ConfigurableLanguage::createFromLangcode('de')->save();

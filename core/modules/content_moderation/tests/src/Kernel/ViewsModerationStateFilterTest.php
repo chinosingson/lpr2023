@@ -53,19 +53,16 @@ class ViewsModerationStateFilterTest extends ViewsKernelTestBase {
 
     $node_type = NodeType::create([
       'type' => 'example',
-      'name' => 'Example',
     ]);
     $node_type->save();
 
     $node_type = NodeType::create([
       'type' => 'another_example',
-      'name' => 'Another Example',
     ]);
     $node_type->save();
 
     $node_type = NodeType::create([
       'type' => 'example_non_moderated',
-      'name' => 'Non-Moderated Example',
     ]);
     $node_type->save();
 
@@ -266,11 +263,7 @@ class ViewsModerationStateFilterTest extends ViewsKernelTestBase {
 
     // Adding a workflow which is not content moderation will not add any
     // additional states to the views filter.
-    $workflow = Workflow::create([
-      'id' => 'test',
-      'label' => 'Test',
-      'type' => 'workflow_type_complex_test',
-    ]);
+    $workflow = Workflow::create(['id' => 'test', 'type' => 'workflow_type_complex_test']);
     $workflow->getTypePlugin()->addState('draft', 'Draft');
     $workflow->save();
     $this->assertPluginStates([

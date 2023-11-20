@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\ckeditor5\Plugin\Validation\Constraint;
 
+// cspell:ignore enableable
+
 use Symfony\Component\Validator\Constraint;
 
 /**

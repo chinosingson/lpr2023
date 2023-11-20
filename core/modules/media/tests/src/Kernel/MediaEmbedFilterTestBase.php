@@ -71,6 +71,7 @@ abstract class MediaEmbedFilterTestBase extends KernelTestBase {
     parent::setUp();
 
     $this->installSchema('file', ['file_usage']);
+    $this->installSchema('system', 'sequences');
     $this->installEntitySchema('file');
     $this->installEntitySchema('media');
     $this->installEntitySchema('user');

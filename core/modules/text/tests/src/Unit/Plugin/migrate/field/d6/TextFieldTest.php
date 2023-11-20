@@ -103,7 +103,7 @@ class TextFieldTest extends UnitTestCase {
     $info = [
       'widget_type' => 'optionwidgets_onoff',
       'global_settings' => [
-        'allowed_values' => "foo|Foo\nBaz|Baz",
+        'allowed_values' => "foo|Foo\nbaz|Baz",
       ],
     ];
     $this->plugin->defineValueProcessPipeline($this->migration, 'field', $info);
@@ -114,7 +114,7 @@ class TextFieldTest extends UnitTestCase {
         'source' => 'value',
         'default_value' => 0,
         'map' => [
-          'Baz' => 1,
+          'baz' => 1,
         ],
       ],
     ];

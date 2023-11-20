@@ -187,7 +187,7 @@ class UserTest extends ResourceTestBase {
       'data' => [
         'type' => 'user--user',
         'attributes' => [
-          'name' => 'Drama llama',
+          'name' => 'Dramallama',
         ],
       ],
     ];

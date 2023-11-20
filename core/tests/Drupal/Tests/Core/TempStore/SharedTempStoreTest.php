@@ -264,9 +264,9 @@ class SharedTempStoreTest extends UnitTestCase {
 
     $metadata = $this->tempStore->getMetadata('test');
     $this->assertInstanceOf(Lock::class, $metadata);
-    $this->assertObjectHasProperty('updated', $metadata);
+    $this->assertObjectHasAttribute('updated', $metadata);
     // Data should get removed.
-    $this->assertObjectNotHasProperty('data', $metadata);
+    $this->assertObjectNotHasAttribute('data', $metadata);
 
     $this->assertNull($this->tempStore->getMetadata('test'));
   }

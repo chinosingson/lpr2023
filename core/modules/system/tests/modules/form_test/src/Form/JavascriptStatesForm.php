@@ -4,7 +4,6 @@ namespace Drupal\form_test\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 
 /**
  * Builds a simple form to test states.
@@ -545,18 +544,6 @@ class JavascriptStatesForm extends FormBase {
         ],
       ],
     ];
-
-    $form['link'] = [
-      '#type' => 'link',
-      '#title' => 'Link states test',
-      '#url' => Url::fromRoute('<front>'),
-      '#states' => [
-        'visible' => [
-          ':input[name="checkbox_trigger"]' => ['checked' => FALSE],
-        ],
-      ],
-    ];
-
     return $form;
   }
 

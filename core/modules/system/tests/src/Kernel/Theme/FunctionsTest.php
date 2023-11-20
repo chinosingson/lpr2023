@@ -91,7 +91,7 @@ class FunctionsTest extends KernelTestBase {
     $variables = [];
     $variables['title'] = 'Some title';
     $variables['attributes'] = [
-      'id' => 'parent-list',
+      'id' => 'parentlist',
     ];
     $variables['items'] = [
       // A plain string value forms an own item.
@@ -102,9 +102,9 @@ class FunctionsTest extends KernelTestBase {
           'id' => 'item-id-b',
         ],
         '#markup' => 'b',
-        'child_list' => [
+        'childlist' => [
           '#theme' => 'item_list',
-          '#attributes' => ['id' => 'b_list'],
+          '#attributes' => ['id' => 'blist'],
           '#list_type' => 'ol',
           '#items' => [
             'ba',
@@ -118,7 +118,7 @@ class FunctionsTest extends KernelTestBase {
       // However, items can also be child #items.
       [
         '#markup' => 'c',
-        'child_list' => [
+        'childlist' => [
           '#attributes' => ['id' => 'clist'],
           'ca',
           [
@@ -145,7 +145,7 @@ class FunctionsTest extends KernelTestBase {
       'f',
     ];
 
-    $inner_b = '<div class="item-list"><ol id="b_list">';
+    $inner_b = '<div class="item-list"><ol id="blist">';
     $inner_b .= '<li>ba</li>';
     $inner_b .= '<li class="item-class-bb">bb</li>';
     $inner_b .= '</ol></div>';
@@ -163,7 +163,7 @@ class FunctionsTest extends KernelTestBase {
 
     $expected = '<div class="item-list">';
     $expected .= '<h3>Some title</h3>';
-    $expected .= '<ul id="parent-list">';
+    $expected .= '<ul id="parentlist">';
     $expected .= '<li>a</li>';
     $expected .= '<li id="item-id-b">b' . $inner_b . '</li>';
     $expected .= '<li>c' . $inner_c . '</li>';

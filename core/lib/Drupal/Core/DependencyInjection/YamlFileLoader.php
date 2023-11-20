@@ -36,7 +36,6 @@ class YamlFileLoader
         'public' => 'public',
         'tags' => 'tags',
         'autowire' => 'autowire',
-        'autoconfigure' => 'autoconfigure',
     ];
 
     /**
@@ -254,9 +253,6 @@ class YamlFileLoader
         }
         if (isset($defaults['autowire'])) {
             $definition->setAutowired($defaults['autowire']);
-        }
-        if (isset($defaults['autoconfigure'])) {
-            $definition->setAutoconfigured($defaults['autoconfigure']);
         }
 
         $definition->setChanges([]);

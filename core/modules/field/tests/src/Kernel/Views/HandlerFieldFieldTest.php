@@ -68,10 +68,7 @@ class HandlerFieldFieldTest extends KernelTestBase {
     $this->installConfig(['filter']);
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
-    NodeType::create([
-      'type' => 'page',
-      'name' => 'Page',
-    ])->save();
+    NodeType::create(['type' => 'page'])->save();
     ViewTestData::createTestViews(static::class, ['field_test_views']);
 
     // Setup basic fields.

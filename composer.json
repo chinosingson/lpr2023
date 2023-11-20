@@ -98,14 +98,14 @@
         "drupal/views_row_insert": "^2.1",
         "drupal/views_striping": "^1.0",
         "drupal/viewsreference": "^2.0@beta",
-        "drush/drush": "^11.0.3",
+        "drush/drush": "^12",
         "laminas/laminas-feed": "^2.22",
-        "symfony/psr-http-message-bridge": "^2.3"
+        "symfony/psr-http-message-bridge": "^2.2"
     },
     "conflict": {
         "drupal/drupal": "*"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
         "allow-plugins": {

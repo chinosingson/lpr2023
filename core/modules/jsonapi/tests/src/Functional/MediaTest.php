@@ -14,7 +14,6 @@ use Drupal\user\Entity\User;
  * JSON:API integration test for the "Media" content entity type.
  *
  * @group jsonapi
- * @group #slow
  */
 class MediaTest extends ResourceTestBase {
 
@@ -99,7 +98,7 @@ class MediaTest extends ResourceTestBase {
     if (!MediaType::load('camelids')) {
       // Create a "Camelids" media type.
       $media_type = MediaType::create([
-        'label' => 'Camelids',
+        'name' => 'Camelids',
         'id' => 'camelids',
         'description' => 'Camelids are large, strictly herbivorous animals with slender necks and long legs.',
         'source' => 'file',
@@ -298,7 +297,7 @@ class MediaTest extends ResourceTestBase {
       'data' => [
         'type' => 'media--camelids',
         'attributes' => [
-          'name' => 'Drama llama',
+          'name' => 'Dramallama',
         ],
         'relationships' => [
           'field_media_file' => [

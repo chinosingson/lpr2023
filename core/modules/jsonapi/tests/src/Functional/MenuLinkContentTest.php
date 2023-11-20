@@ -13,7 +13,6 @@ use GuzzleHttp\RequestOptions;
  * JSON:API integration test for the "MenuLinkContent" content entity type.
  *
  * @group jsonapi
- * @group #slow
  */
 class MenuLinkContentTest extends ResourceTestBase {
 
@@ -160,7 +159,7 @@ class MenuLinkContentTest extends ResourceTestBase {
       'data' => [
         'type' => 'menu_link_content--menu_link_content',
         'attributes' => [
-          'title' => 'Drama llama',
+          'title' => 'Dramallama',
           'link' => [
             'uri' => 'http://www.urbandictionary.com/define.php?term=drama%20llama',
           ],

@@ -220,9 +220,9 @@ class EntityViewBuilderTest extends EntityKernelTestBase {
       'content_translation',
     ]);
     $this->installEntitySchema('entity_test_mul');
-    $en = ConfigurableLanguage::createFromLangcode('en');
+    $en = ConfigurableLanguage::create(['id' => 'en']);
     $en->save();
-    $es = ConfigurableLanguage::createFromLangcode('es');
+    $es = ConfigurableLanguage::create(['id' => 'es']);
     $es->save();
     $this->container->get('content_translation.manager')->setEnabled('entity_test_mul', 'entity_test_mul', TRUE);
 

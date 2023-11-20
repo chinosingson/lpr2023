@@ -173,7 +173,6 @@ class DateTest extends UnitTestCase {
 
     // Removed characters related to timezone 'e' and 'T', as test does not have
     // timezone set.
-    // cspell:disable-next-line
     $date_characters = 'dDjlNSwzWFmMntLoYyaABgGhHisuIOPZcrU';
     $date_chars = str_split($date_characters);
 
@@ -193,7 +192,7 @@ class DateTest extends UnitTestCase {
     $timestamp = $this->createTimestamp('2013-12-11 10:09:09');
     $options = [];
 
-    // Mocks the formatDiff function of the DateFormatter object.
+    // Mocks the formatDiff function of the dateformatter object.
     $this->dateFormatterStub
       ->expects($this->exactly(2))
       ->method('formatDiff')
@@ -226,7 +225,7 @@ class DateTest extends UnitTestCase {
     $request_time = $this->createTimestamp('2013-12-11 10:09:08');
     $options = [];
 
-    // Mocks the formatDiff function of the DateFormatter object.
+    // Mocks the formatDiff function of the dateformatter object.
     $this->dateFormatterStub
       ->expects($this->exactly(2))
       ->method('formatDiff')

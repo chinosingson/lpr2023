@@ -44,7 +44,6 @@ class FilterTest extends WebDriverTestBase {
 
     NodeType::create([
       'type' => 'page',
-      'name' => 'Page',
     ])->save();
 
     FieldConfig::create([

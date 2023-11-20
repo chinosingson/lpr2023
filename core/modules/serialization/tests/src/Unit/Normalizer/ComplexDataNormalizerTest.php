@@ -118,14 +118,6 @@ class ComplexDataNormalizerTest extends UnitTestCase {
  * Test normalizer with a different supported class.
  */
 class TestExtendedNormalizer extends ComplexDataNormalizer {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getSupportedTypes(?string $format): array {
-    return [
-      \stdClass::class => TRUE,
-    ];
-  }
+  protected $supportedInterfaceOrClass = \stdClass::class;
 
 }

@@ -92,6 +92,7 @@ class DbDumpTest extends DriverSpecificKernelTestBase {
     $this->installEntitySchema('file');
     $this->installEntitySchema('menu_link_content');
     $this->installEntitySchema('path_alias');
+    $this->installSchema('system', 'sequences');
 
     // Place some sample config to test for in the export.
     $this->data = [
@@ -129,6 +130,7 @@ class DbDumpTest extends DriverSpecificKernelTestBase {
       'menu_link_content_data',
       'menu_link_content_revision',
       'menu_link_content_field_revision',
+      'sequences',
       'sessions',
       'path_alias',
       'path_alias_revision',

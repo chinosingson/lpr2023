@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\filter\FilterFormatInterface;
 use Drupal\filter\FilterPluginCollection;
 use Drupal\filter\Plugin\FilterInterface;
-use Drupal\user\Entity\Role;
 
 /**
  * Represents a text format.
@@ -229,7 +228,7 @@ class FilterFormat extends ConfigEntityBase implements FilterFormatInterface, En
       // \Drupal\filter\FilterPermissions::permissions() and lastly
       // filter_formats(), so its cache must be reset upfront.
       if (($roles = $this->get('roles')) && $permission = $this->getPermissionName()) {
-        foreach (Role::loadMultiple() as $rid => $role) {
+        foreach (user_roles() as $rid => $name) {
           $enabled = in_array($rid, $roles, TRUE);
           user_role_change_permissions($rid, [$permission => $enabled]);
         }

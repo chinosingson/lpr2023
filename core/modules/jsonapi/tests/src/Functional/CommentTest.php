@@ -245,7 +245,7 @@ class CommentTest extends ResourceTestBase {
         'attributes' => [
           'entity_type' => 'entity_test',
           'field_name' => 'comment',
-          'subject' => 'Drama llama',
+          'subject' => 'Dramallama',
           'comment_body' => [
             'value' => 'Llamas are awesome.',
             'format' => 'plain_text',

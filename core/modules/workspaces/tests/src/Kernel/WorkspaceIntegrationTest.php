@@ -87,6 +87,7 @@ class WorkspaceIntegrationTest extends KernelTestBase {
 
     $this->installConfig(['filter', 'node', 'system', 'language', 'content_translation']);
 
+    $this->installSchema('system', ['sequences']);
     $this->installSchema('node', ['node_access']);
 
     $language = ConfigurableLanguage::createFromLangcode('de');

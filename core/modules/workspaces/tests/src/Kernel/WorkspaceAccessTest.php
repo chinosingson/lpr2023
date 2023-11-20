@@ -33,6 +33,7 @@ class WorkspaceAccessTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
+    $this->installSchema('system', ['sequences']);
     $this->installSchema('workspaces', ['workspace_association']);
 
     $this->installEntitySchema('workspace');
@@ -112,7 +113,7 @@ class WorkspaceAccessTest extends KernelTestBase {
   }
 
   /**
-   * @covers \Drupal\workspaces\Plugin\EntityReferenceSelection\WorkspaceSelection::getReferenceableEntities
+   * @coversDefaultClass \Drupal\workspaces\Plugin\EntityReferenceSelection\WorkspaceSelection
    */
   public function testWorkspaceSelection() {
     $own_permission_user = $this->createUser(['view own workspace']);

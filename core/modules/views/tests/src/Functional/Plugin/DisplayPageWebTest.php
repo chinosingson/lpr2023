@@ -7,7 +7,7 @@ use Drupal\Tests\views\Functional\ViewTestBase;
 use Drupal\views\Views;
 
 /**
- * Tests the views page display plugin.
+ * Tests the views page display plugin as webtest.
  *
  * @group views
  */

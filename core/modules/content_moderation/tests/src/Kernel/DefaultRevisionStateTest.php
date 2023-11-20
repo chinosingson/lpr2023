@@ -65,7 +65,6 @@ class DefaultRevisionStateTest extends KernelTestBase {
     ConfigurableLanguage::createFromLangcode('fr')->save();
     $node_type = NodeType::create([
       'type' => 'example',
-      'name' => 'Example',
     ]);
     $node_type->save();
 

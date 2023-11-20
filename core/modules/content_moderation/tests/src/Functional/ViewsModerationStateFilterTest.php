@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\content_moderation\Functional;
 
+use Drupal\node\Entity\NodeType;
 use Drupal\Tests\content_moderation\Traits\ContentModerationTestTrait;
 use Drupal\Tests\views\Functional\ViewTestBase;
 use Drupal\views\Entity\View;
@@ -44,15 +45,15 @@ class ViewsModerationStateFilterTest extends ViewTestBase {
   protected function setUp($import_test_views = TRUE, $modules = []): void {
     parent::setUp(FALSE, $modules);
 
-    $this->drupalCreateContentType([
+    NodeType::create([
       'type' => 'example_a',
-    ]);
-    $this->drupalCreateContentType([
+    ])->save();
+    NodeType::create([
       'type' => 'example_b',
-    ]);
-    $this->drupalCreateContentType([
+    ])->save();
+    NodeType::create([
       'type' => 'example_c',
-    ]);
+    ])->save();
 
     $this->createEditorialWorkflow();
 

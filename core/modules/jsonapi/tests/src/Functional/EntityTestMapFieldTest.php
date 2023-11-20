@@ -142,7 +142,7 @@ class EntityTestMapFieldTest extends ResourceTestBase {
       'data' => [
         'type' => 'entity_test_map_field--entity_test_map_field',
         'attributes' => [
-          'name' => 'Drama llama',
+          'name' => 'Dramallama',
           'data' => static::$mapValue,
         ],
       ],

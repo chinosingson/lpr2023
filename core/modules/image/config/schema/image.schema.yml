@@ -5,9 +5,9 @@ image.style.*:
   label: 'Image style'
   mapping:
     name:
-      type: machine_name
+      type: string
     label:
-      type: required_label
+      type: label
       label: 'Label'
     effects:
       type: sequence

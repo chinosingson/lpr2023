@@ -59,6 +59,7 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
+    $this->installSchema('system', ['sequences']);
     $this->installSchema('user', ['users_data']);
     $this->installEntitySchema('user');
     $this->installEntitySchema('block_content');
@@ -91,8 +92,8 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
     ])->save();
 
     $this->role = Role::create([
-      'id' => 'test',
-      'label' => 'test role',
+      'id' => 'roly',
+      'label' => 'roly poly',
     ]);
     $this->role->save();
     $this->accessControlHandler = new BlockContentAccessControlHandler(\Drupal::entityTypeManager()->getDefinition('block_content'), \Drupal::service('event_dispatcher'));
@@ -447,7 +448,7 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
       NULL,
       AccessResultNeutral::class,
     ];
-    $cases['view all revisions:administer block content'] = [
+    $cases['view all revisions:administer blocks'] = [
       'view all revisions',
       TRUE,
       TRUE,
@@ -485,16 +486,16 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
       NULL,
       AccessResultNeutral::class,
     ];
-    $cases['revert:administer block content:latest'] = [
+    $cases['revert:administer blocks:latest'] = [
       'revert',
       TRUE,
       TRUE,
-      ['administer block content'],
+      ['access block library'],
       TRUE,
       NULL,
       AccessResultForbidden::class,
     ];
-    $cases['revert:administer block content:historical'] = [
+    $cases['revert:administer blocks:historical'] = [
       'revert',
       TRUE,
       TRUE,
@@ -507,7 +508,7 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
       'revert',
       TRUE,
       TRUE,
-      ['administer block content'],
+      ['administer blocks'],
       TRUE,
       NULL,
       AccessResultForbidden::class,
@@ -551,16 +552,16 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
       NULL,
       AccessResultNeutral::class,
     ];
-    $cases['delete revision:administer block content:latest'] = [
+    $cases['delete revision:administer blocks:latest'] = [
       'delete revision',
       TRUE,
       TRUE,
-      ['administer block content'],
+      ['administer blocks'],
       TRUE,
       NULL,
       AccessResultForbidden::class,
     ];
-    $cases['delete revision:administer block content:historical'] = [
+    $cases['delete revision:administer blocks:historical'] = [
       'delete revision',
       TRUE,
       TRUE,
@@ -573,7 +574,7 @@ class BlockContentAccessHandlerTest extends KernelTestBase {
       'delete revision',
       TRUE,
       TRUE,
-      ['administer block content'],
+      ['administer blocks'],
       TRUE,
       NULL,
       AccessResultForbidden::class,

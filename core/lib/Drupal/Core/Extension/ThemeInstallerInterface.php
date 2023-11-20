@@ -21,11 +21,7 @@ interface ThemeInstallerInterface {
    *   Whether any of the given themes have been installed.
    *
    * @throws \Drupal\Core\Extension\ExtensionNameLengthException
-   *   Thrown when a theme's name is longer than
-   *   DRUPAL_EXTENSION_NAME_MAX_LENGTH.
-   *
-   * @throws \Drupal\Core\Extension\ExtensionNameReservedException
-   *   Thrown when a theme's name is already used by an installed module.
+   *   Thrown when the theme name is to long.
    *
    * @throws \Drupal\Core\Extension\Exception\UnknownExtensionException
    *   Thrown when the theme does not exist.

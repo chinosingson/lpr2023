@@ -74,13 +74,6 @@ class BlockForm extends EntityForm {
   protected $pluginFormFactory;
 
   /**
-   * The block repository service.
-   *
-   * @var \Drupal\block\BlockRepositoryInterface
-   */
-  protected $blockRepository;
-
-  /**
    * Constructs a BlockForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -95,21 +88,14 @@ class BlockForm extends EntityForm {
    *   The theme handler.
    * @param \Drupal\Core\Plugin\PluginFormFactoryInterface $plugin_form_manager
    *   The plugin form manager.
-   * @param \Drupal\block\BlockRepositoryInterface|null $block_repository
-   *   The block repository service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ExecutableManagerInterface $manager, ContextRepositoryInterface $context_repository, LanguageManagerInterface $language, ThemeHandlerInterface $theme_handler, PluginFormFactoryInterface $plugin_form_manager, ?BlockRepositoryInterface $block_repository = NULL) {
-    if ($block_repository === NULL) {
-      @trigger_error('Calling ' . __METHOD__ . ' without the $block_repository argument is deprecated in drupal:10.2.0 and will be required in drupal:11.0.0. See https://www.drupal.org/node/3333575', E_USER_DEPRECATED);
-      $block_repository = \Drupal::service('block.repository');
-    }
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ExecutableManagerInterface $manager, ContextRepositoryInterface $context_repository, LanguageManagerInterface $language, ThemeHandlerInterface $theme_handler, PluginFormFactoryInterface $plugin_form_manager) {
     $this->storage = $entity_type_manager->getStorage('block');
     $this->manager = $manager;
     $this->contextRepository = $context_repository;
     $this->language = $language;
     $this->themeHandler = $theme_handler;
     $this->pluginFormFactory = $plugin_form_manager;
-    $this->blockRepository = $block_repository;
   }
 
   /**
@@ -122,8 +108,7 @@ class BlockForm extends EntityForm {
       $container->get('context.repository'),
       $container->get('language_manager'),
       $container->get('theme_handler'),
-      $container->get('plugin_form.factory'),
-      $container->get('block.repository')
+      $container->get('plugin_form.factory')
     );
   }
 
@@ -262,23 +247,16 @@ class BlockForm extends EntityForm {
       $form[$condition_id] = $condition_form;
     }
 
-    // Disable negation for specific conditions.
-    $disable_negation = [
-      'entity_bundle:node',
-      'language',
-      'response_status',
-      'user_role',
-    ];
-    foreach ($disable_negation as $condition) {
-      if (isset($form[$condition])) {
-        $form[$condition]['negate']['#type'] = 'value';
-        $form[$condition]['negate']['#value'] = $form[$condition]['negate']['#default_value'];
-      }
+    if (isset($form['entity_bundle:node'])) {
+      $form['entity_bundle:node']['negate']['#type'] = 'value';
+      $form['entity_bundle:node']['negate']['#title_display'] = 'invisible';
+      $form['entity_bundle:node']['negate']['#value'] = $form['entity_bundle:node']['negate']['#default_value'];
     }
-
     if (isset($form['user_role'])) {
       $form['user_role']['#title'] = $this->t('Roles');
       unset($form['user_role']['roles']['#description']);
+      $form['user_role']['negate']['#type'] = 'value';
+      $form['user_role']['negate']['#value'] = $form['user_role']['negate']['#default_value'];
     }
     if (isset($form['request_path'])) {
       $form['request_path']['#title'] = $this->t('Pages');
@@ -289,6 +267,10 @@ class BlockForm extends EntityForm {
         $this->t('Show for the listed pages'),
         $this->t('Hide for the listed pages'),
       ];
+    }
+    if (isset($form['language'])) {
+      $form['language']['negate']['#type'] = 'value';
+      $form['language']['negate']['#value'] = $form['language']['negate']['#default_value'];
     }
     return $form;
   }
@@ -394,7 +376,7 @@ class BlockForm extends EntityForm {
   }
 
   /**
-   * Generates a unique machine name for a block based on a suggested string.
+   * Generates a unique machine name for a block.
    *
    * @param \Drupal\block\BlockInterface $block
    *   The block entity.
@@ -404,7 +386,28 @@ class BlockForm extends EntityForm {
    */
   public function getUniqueMachineName(BlockInterface $block) {
     $suggestion = $block->getPlugin()->getMachineNameSuggestion();
-    return $this->blockRepository->getUniqueMachineName($suggestion, $block->getTheme());
+    if ($block->getTheme()) {
+      $suggestion = $block->getTheme() . '_' . $suggestion;
+    }
+
+    // Get all the blocks which starts with the suggested machine name.
+    $query = $this->storage->getQuery();
+    $query->condition('id', $suggestion, 'CONTAINS');
+    $block_ids = $query->execute();
+
+    $block_ids = array_map(function ($block_id) {
+      $parts = explode('.', $block_id);
+      return end($parts);
+    }, $block_ids);
+
+    // Iterate through potential IDs until we get a new one. E.g.
+    // 'plugin', 'plugin_2', 'plugin_3', etc.
+    $count = 1;
+    $machine_default = $suggestion;
+    while (in_array($machine_default, $block_ids)) {
+      $machine_default = $suggestion . '_' . ++$count;
+    }
+    return $machine_default;
   }
 
   /**

@@ -186,11 +186,8 @@ JS;
             ],
           ],
           'ckeditor5_list' => [
-            'properties' => [
-              'reversed' => FALSE,
-              'startIndex' => FALSE,
-            ],
-            'multiBlock' => TRUE,
+            'reversed' => FALSE,
+            'startIndex' => FALSE,
           ],
           'ckeditor5_sourceEditing' => [
             'allowed_tags' => [

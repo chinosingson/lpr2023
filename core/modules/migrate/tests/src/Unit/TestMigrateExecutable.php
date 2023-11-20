@@ -123,4 +123,11 @@ class TestMigrateExecutable extends MigrateExecutable {
     $this->memoryThreshold = $threshold;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function formatSize($size) {
+    return $size;
+  }
+
 }

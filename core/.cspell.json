@@ -14,8 +14,6 @@
       "**/LICENSE.txt",
       "../**/LICENSE.txt",
       "modules/**/Migrate*Test.php",
-      "modules/book/tests/fixtures/drupal6.php",
-      "modules/book/tests/fixtures/drupal7.php",
       "modules/ckeditor5/js/build/*",
       "modules/forum/tests/fixtures/drupal6.php",
       "modules/forum/tests/fixtures/drupal7.php",
@@ -49,11 +47,8 @@
       { "name": "drupal", "path": "./misc/cspell/dictionary.txt"}
     ],
     "flagWords": [
-      "e-mail",
       "grey",
-      "hte",
-      "ist",
-      "please"
+      "hte"
     ],
     "overrides": [
       {

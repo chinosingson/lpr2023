@@ -68,12 +68,6 @@ class TermForm extends ContentEntityForm {
       $parent = [0];
     }
 
-    if ($this->getRequest()->query->has('parent')) {
-      $parent = array_values(array_intersect(
-        array_keys($options),
-        (array) $this->getRequest()->query->all()['parent'],
-      ));
-    }
     $form['relations']['parent'] = [
       '#type' => 'select',
       '#title' => $this->t('Parent terms'),

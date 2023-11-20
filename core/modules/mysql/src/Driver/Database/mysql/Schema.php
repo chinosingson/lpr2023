@@ -409,9 +409,9 @@ class Schema extends DatabaseSchema {
       $this->ensureNotNullPrimaryKey($keys_new['primary key'], [$field => $spec]);
     }
 
-    $fix_null = FALSE;
+    $fixnull = FALSE;
     if (!empty($spec['not null']) && !isset($spec['default']) && !$is_primary_key) {
-      $fix_null = TRUE;
+      $fixnull = TRUE;
       $spec['not null'] = FALSE;
     }
     $query = 'ALTER TABLE {' . $table . '} ADD ';
@@ -445,7 +445,7 @@ class Schema extends DatabaseSchema {
         ->fields([$field => $spec['initial']])
         ->execute();
     }
-    if ($fix_null) {
+    if ($fixnull) {
       $spec['not null'] = TRUE;
       $this->changeField($table, $field, $field, $spec);
     }

@@ -350,9 +350,9 @@ class TermTest extends ResourceTestBase {
       'data' => [
         'type' => 'taxonomy_term--camelids',
         'attributes' => [
-          'name' => 'Drama llama',
+          'name' => 'Dramallama',
           'description' => [
-            'value' => 'Drama llamas are the coolest camelids.',
+            'value' => 'Dramallamas are the coolest camelids.',
             'format' => NULL,
           ],
         ],
@@ -464,7 +464,7 @@ class TermTest extends ResourceTestBase {
       ->setName('Lamoids')
       ->save();
     Term::create(['vid' => Vocabulary::load('camelids')->id()])
-      ->setName('Camels')
+      ->setName('Wimoids')
       ->save();
 
     // Modify the entity under test to use the provided parent terms.

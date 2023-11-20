@@ -55,6 +55,7 @@ class EntityReferenceSelectionAccessTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
+    $this->installSchema('system', 'sequences');
     $this->installSchema('comment', ['comment_entity_statistics']);
     $this->installSchema('file', ['file_usage']);
 

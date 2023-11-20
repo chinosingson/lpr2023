@@ -9,7 +9,6 @@ use Drupal\Component\FileSystem\FileSystem as DrupalFilesystem;
 use Drupal\Tests\DrupalTestBrowser;
 use Drupal\Tests\PhpUnitCompatibilityTrait;
 use Drupal\Tests\Traits\PhpUnitWarnings;
-use Drupal\TestTools\Extension\RequiresComposerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 use Symfony\Component\Finder\Finder;
@@ -45,13 +44,15 @@ use Symfony\Component\Process\Process;
  *   built into the test, or abstract base classes.
  * - Allow parallel testing, using random/unique port numbers for different HTTP
  *   servers.
+ * - Allow the use of PHPUnit-style (at)require annotations for external shell
+ *   commands.
  *
  * We don't use UiHelperInterface because it is too tightly integrated to
  * Drupal.
  */
 abstract class BuildTestBase extends TestCase {
 
-  use RequiresComposerTrait;
+  use ExternalCommandRequirementsTrait;
   use PhpUnitWarnings;
   use PhpUnitCompatibilityTrait;
 
@@ -151,8 +152,17 @@ abstract class BuildTestBase extends TestCase {
   /**
    * {@inheritdoc}
    */
+  public static function setUpBeforeClass(): void {
+    parent::setUpBeforeClass();
+    static::checkClassCommandRequirements();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
+    static::checkMethodCommandRequirements($this->getName());
     $this->phpFinder = new PhpExecutableFinder();
     // Set up the workspace directory.
     // @todo Glean working directory from env vars, etc.
@@ -567,10 +577,6 @@ abstract class BuildTestBase extends TestCase {
    * - Call the method to get a default Finder object which can then be
    *   modified for other purposes.
    *
-   * Note that the vendor directory is deliberately not included in the
-   * directory exclusions here, so that packages are copied and composer does
-   * not attempt to download them from packagist/github during test runs.
-   *
    * @return \Symfony\Component\Finder\Finder
    *   A Finder object ready to iterate over core codebase.
    */
@@ -581,6 +587,7 @@ abstract class BuildTestBase extends TestCase {
       ->in($this->getDrupalRoot())
       ->notPath('#^sites/default/files#')
       ->notPath('#^sites/simpletest#')
+      ->notPath('#^vendor#')
       ->notPath('#^core/node_modules#')
       ->notPath('#^sites/default/settings\..*php#')
       ->ignoreDotFiles(FALSE)
